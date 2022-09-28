@@ -1,0 +1,4 @@
+<launch>
+    <node pkg="multimaster_example" type="talker" name="multimaster_talker" output="screen">
+    </node>
+</launch>
