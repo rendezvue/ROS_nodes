@@ -22,6 +22,8 @@ namespace ros {
     }
 }
 
+static std::string publish_name;
+
 //class which create  multimaster/chatter on the foreign pc 
 class foreignTopic{
 public:
@@ -35,7 +37,7 @@ private:
 };
 
 foreignTopic::foreignTopic() {
-    m_pub_odom= n.advertise<nav_msgs::Odometry>("multimaster/odom", 1000);
+    m_pub_odom= n.advertise<nav_msgs::Odometry>(publish_name + "/odom", 1000);
 }
 foreignTopic::~foreignTopic(){
 }
@@ -49,15 +51,15 @@ class multimaster{
 public:
     multimaster();
     ~multimaster();
-     bool getParam();
-     std::string foreign_master_uri();
-     void init(ros::M_string remappings);
+    bool getParam();
+    std::string foreign_master_uri();
+    void init(ros::M_string remappings);
 
-     
+
     std::string foreign_master, host_master;
-     std::string foreign_ip;
-     int foreign_port, msgsFrequency_Hz;
-     ros::NodeHandle nh;
+    std::string foreign_ip;
+    int foreign_port, msgsFrequency_Hz;
+    ros::NodeHandle nh;
 private:
 
 };
@@ -83,7 +85,7 @@ bool multimaster::getParam(){
 
     // Get the other parameters from the launch file     
     nh.param<int>("msgsFrequency_Hz", msgsFrequency_Hz, 10);
-
+    nh.param<std::string>("publish_name", publish_name, "rdvremote" );
     //Get the host and foreign master_uri
         std::stringstream ss;
         ss <<"http://"<<foreign_ip<<":"<<foreign_port<<"/";
