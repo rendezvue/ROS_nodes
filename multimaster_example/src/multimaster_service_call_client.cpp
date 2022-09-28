@@ -12,7 +12,7 @@ int main(int argc, char **argv)
   }
 
   ros::NodeHandle n;
-  ros::ServiceClient client = n.serviceClient<multimaster_example::AddTwoInts>("add_two_ints");
+  ros::ServiceClient client = n.serviceClient<multimaster_example::AddTwoInts>("/rdvremote/add_two_ints");
   multimaster_example::AddTwoInts srv;
   srv.request.a = atoll(argv[1]);
   srv.request.b = atoll(argv[2]);
