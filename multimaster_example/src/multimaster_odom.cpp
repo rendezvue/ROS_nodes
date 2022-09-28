@@ -14,7 +14,7 @@
  #include <sstream>
 #include <fstream>
 #include <ros/package.h>
-
+#include <nav_msgs/Odometry.h>
 
 namespace ros {
     namespace master {
@@ -27,21 +27,21 @@ class foreignTopic{
 public:
       foreignTopic();
      ~foreignTopic();
-     void callback(const std_msgs::String::ConstPtr& msg);    
-     ros::Publisher chat_;
+     void callback(const nav_msgs::Odometry::ConstPtr& msg);    
+     ros::Publisher m_pub_odom;
 
 private:
      ros::NodeHandle n;
 };
 
 foreignTopic::foreignTopic() {
-    chat_= n.advertise<std_msgs::String>("multimaster/chatter", 1000);
+    m_pub_odom= n.advertise<nav_msgs::Odometry>("multimaster/odom", 1000);
 }
 foreignTopic::~foreignTopic(){
 }
 
-void foreignTopic::callback(const std_msgs::String::ConstPtr& msg){
-    chat_.publish(msg);
+void foreignTopic::callback(const nav_msgs::Odometry::ConstPtr& msg){
+    m_pub_odom.publish(msg);
 }
 
 //The class with functions which read the parameters from launch file and subscribe to the multimaster/chatter
@@ -100,7 +100,7 @@ void multimaster::init(ros::M_string remappings) {
     //Create subscribers in the host and connect them to the foreign topics 
     remappings["__master"] = host_master;
     ros::master::init(remappings);
-    ros::Subscriber subscriberFeedback = nh.subscribe("/chatter", 1, &foreignTopic::callback, &pc);  
+    ros::Subscriber subscriberFeedback = nh.subscribe("/odom", 1, &foreignTopic::callback, &pc);  
     remappings["__master"] =  foreign_master;
     ros::master::init(remappings);
     while(ros::ok() && ros::master::check()==true){

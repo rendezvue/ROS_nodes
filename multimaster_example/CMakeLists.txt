@@ -6,7 +6,12 @@ set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 MESSAGE("FALGS: ${CMAKE_CXX_FLAGS}")
 
 ## Find catkin and any catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp rospy roslib std_msgs)
+find_package(catkin REQUIRED COMPONENTS 
+    roscpp 
+    rospy 
+    roslib 
+    std_msgs
+    nav_msgs)
 
 ## Declare ROS messages and services
 #add_message_files(FILES Num.msg)
@@ -24,6 +29,9 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 add_executable(multimaster_example src/multimaster_example.cpp)
 target_link_libraries(multimaster_example ${catkin_LIBRARIES})
 #add_dependencies(subscriber beginner_tutorials_generate_messages_cpp)
+
+add_executable(multimaster_odom src/multimaster_odom.cpp)
+target_link_libraries(multimaster_odom ${catkin_LIBRARIES})
 
 
 add_executable(talker src/talker.cpp)
