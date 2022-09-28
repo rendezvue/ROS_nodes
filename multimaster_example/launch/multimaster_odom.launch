@@ -1,0 +1,8 @@
+<launch>
+  <param name="foreign_ip"  value="192.168.212.6"/>
+  <param name="foreign_port"  value="11311"/>
+  <param name="connectCheck_Hz"  value="200"/>
+  <param name="msgsFrequency_Hz"  value="10" />
+  <node pkg="multimaster_example" type="multimaster_example" name="multimaster_example" output="screen">
+  </node>
+</launch>
