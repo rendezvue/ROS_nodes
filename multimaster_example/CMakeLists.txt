@@ -39,6 +39,9 @@ add_executable(multimaster_service_call src/multimaster_service_call.cpp)
 target_link_libraries(multimaster_service_call ${catkin_LIBRARIES})
 add_dependencies(multimaster_service_call multimaster_example_generate_messages_cpp)
 
+add_executable(multimaster_service_call_client src/multimaster_service_call_client.cpp)
+target_link_libraries(multimaster_service_call_client ${catkin_LIBRARIES})
+add_dependencies(multimaster_service_call_client multimaster_example_generate_messages_cpp)
 
 add_executable(talker src/talker.cpp)
 target_link_libraries(talker ${catkin_LIBRARIES})

@@ -1,0 +1,4 @@
+<launch>
+  <node pkg="multimaster_example" type="multimaster_service_call_client" name="odom_test" output="screen">
+  </node>
+</launch>

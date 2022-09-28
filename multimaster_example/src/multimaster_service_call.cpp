@@ -26,6 +26,9 @@ namespace ros {
 
 static std::string publish_name;
 
+bool add(multimaster_example::AddTwoInts::Request  &req,
+    multimaster_example::AddTwoInts::Response &res);
+
 //class which create  multimaster/chatter on the foreign pc 
 class foreignTopic{
 public:
@@ -33,9 +36,7 @@ public:
      ~foreignTopic();
      void callback(const nav_msgs::Odometry::ConstPtr& msg);    
      ros::Publisher m_pub_odom;
-
-     bool add(multimaster_example::AddTwoInts::Request  &req,
-         multimaster_example::AddTwoInts::Response &res);
+     ros::ServiceServer m_service;
 
 private:
      ros::NodeHandle n;
@@ -43,6 +44,7 @@ private:
 
 foreignTopic::foreignTopic() {
     m_pub_odom= n.advertise<nav_msgs::Odometry>(publish_name + "/odom", 1000);
+    m_service = n.advertiseService(publish_name + "/add_two_ints", add);
 }
 foreignTopic::~foreignTopic(){
 }
@@ -51,7 +53,7 @@ void foreignTopic::callback(const nav_msgs::Odometry::ConstPtr& msg){
     m_pub_odom.publish(msg);
 }
 
-bool foreignTopic::add(multimaster_example::AddTwoInts::Request  &req,
+bool add(multimaster_example::AddTwoInts::Request  &req,
          multimaster_example::AddTwoInts::Response &res)
 {
   res.sum = req.a + req.b;
