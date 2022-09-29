@@ -39,7 +39,7 @@ private:
 };
 
 foreignTopic::foreignTopic() {
-    m_pub_odom= n.advertise<nav_msgs::Odometry>(publish_name + "/odom", 1000);
+    m_pub_odom= n.advertise<nav_msgs::Odometry>(publish_name + "/hdl_odom", 1000);
     m_pub_remotemsg= n.advertise<std_msgs::String>(publish_name + "/remotemsg", 1000);
 }
 foreignTopic::~foreignTopic(){
@@ -110,7 +110,7 @@ void multimaster::init(ros::M_string remappings) {
     //Create subscribers in the host and connect them to the foreign topics 
     remappings["__master"] = host_master;
     ros::master::init(remappings);
-    ros::Subscriber subscriberFeedback = nh.subscribe("/odom", 1, &foreignTopic::callback_odom, &pc);
+    ros::Subscriber subscriberFeedback = nh.subscribe("/hdl_odom", 1, &foreignTopic::callback_odom, &pc);
     ros::Subscriber subscriberFeedback_remotemsg = nh.subscribe("/remotemsg", 1, &foreignTopic::callback_remotemsg, &pc);
     remappings["__master"] =  foreign_master;
     ros::master::init(remappings);
