@@ -1,5 +1,6 @@
 <launch>
   <arg name="foreign_ip" default="192.168.212.6"/>  
+  <arg name="foreign_port" default="21311" />
   <arg name="node_name" default="node_robot1" /> <!-- must be different with robot2 -->
 
   <param name="foreign_ip"  value="$(arg foreign_ip)"/>
@@ -7,9 +8,5 @@
   <param name="connectCheck_Hz"  value="200"/>
   <param name="msgsFrequency_Hz"  value="10" />
   <param name="publish_name" value="rdvremote" />
-  <node pkg="multimaster_example" type="multimaster_odom" name="$(arg node_name)" output="screen">
-  </node>
-
-  <node pkg="nthing_gazebo_simulation" type="mlbot_pose.py" name="gazebo_sim_mlbot_pose" output="screen"/>
 
 </launch>
