@@ -1,6 +1,6 @@
 <launch>
   <param name="foreign_ip"  value="192.168.212.6"/>
-  <param name="foreign_port"  value="11311"/>
+  <param name="foreign_port"  value="21311"/>
   <param name="connectCheck_Hz"  value="200"/>
   <param name="msgsFrequency_Hz"  value="10" />
   <param name="publish_name" value="rdvremote" />

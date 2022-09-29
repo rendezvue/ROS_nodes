@@ -29,8 +29,10 @@ class foreignTopic{
 public:
       foreignTopic();
      ~foreignTopic();
-     void callback(const nav_msgs::Odometry::ConstPtr& msg);    
+     void callback_odom(const nav_msgs::Odometry::ConstPtr& msg);
+     void callback_remotemsg(const std_msgs::String::ConstPtr& msg);
      ros::Publisher m_pub_odom;
+     ros::Publisher m_pub_remotemsg;
 
 private:
      ros::NodeHandle n;
@@ -38,12 +40,18 @@ private:
 
 foreignTopic::foreignTopic() {
     m_pub_odom= n.advertise<nav_msgs::Odometry>(publish_name + "/odom", 1000);
+    m_pub_remotemsg= n.advertise<std_msgs::String>(publish_name + "/remotemsg", 1000);
 }
 foreignTopic::~foreignTopic(){
 }
 
-void foreignTopic::callback(const nav_msgs::Odometry::ConstPtr& msg){
+void foreignTopic::callback_odom(const nav_msgs::Odometry::ConstPtr& msg){
     m_pub_odom.publish(msg);
+}
+
+void foreignTopic::callback_remotemsg(const std_msgs::String::ConstPtr& msg)
+{
+    m_pub_remotemsg.publish(msg);
 }
 
 //The class with functions which read the parameters from launch file and subscribe to the multimaster/chatter
@@ -98,11 +106,12 @@ bool multimaster::getParam(){
 void multimaster::init(ros::M_string remappings) {
                   
     ros::Rate loop_rate(msgsFrequency_Hz);     
-                 foreignTopic pc; 
+    foreignTopic pc;
     //Create subscribers in the host and connect them to the foreign topics 
     remappings["__master"] = host_master;
     ros::master::init(remappings);
-    ros::Subscriber subscriberFeedback = nh.subscribe("/odom", 1, &foreignTopic::callback, &pc);  
+    ros::Subscriber subscriberFeedback = nh.subscribe("/odom", 1, &foreignTopic::callback_odom, &pc);
+    ros::Subscriber subscriberFeedback_remotemsg = nh.subscribe("/remotemsg", 1, &foreignTopic::callback_remotemsg, &pc);
     remappings["__master"] =  foreign_master;
     ros::master::init(remappings);
     while(ros::ok() && ros::master::check()==true){

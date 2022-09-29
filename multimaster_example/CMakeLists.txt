@@ -4,11 +4,14 @@ project(multimaster_example)
 
 set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 MESSAGE("FALGS: ${CMAKE_CXX_FLAGS}")
+set(CMAKE_PREFIX_PATH "/opt/ros/melodic")
+set(qt_build_DIR "/opt/ros/melodic/share/qt_build/cmake")
+set(roscpp_DIR "/opt/ros/melodic/share/roscpp/cmake")
 
 ## Find catkin and any catkin packages
 find_package(catkin REQUIRED COMPONENTS 
-    roscpp 
-    rospy 
+    roscpp
+    rospy
     roslib 
     std_msgs
     nav_msgs)
