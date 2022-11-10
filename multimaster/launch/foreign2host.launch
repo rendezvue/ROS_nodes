@@ -1,0 +1,14 @@
+<launch>
+  <arg name="pub_namespace" default="pub_child" /> 
+  <arg name="anyway"           default="/anyway" />
+
+  <param name="foreign_ip"  value="192.168.100.7"/>
+  <param name="foreign_port"  value="11311"/>
+  <param name="connectCheck_Hz"  value="200"/>
+  <param name="msgsFrequency_Hz"  value="10" />
+  <param name="namespace"  value="$(arg anyway)" />
+  <node name="$(arg pub_namespace)" pkg="multimaster" type="foreign2host" output="screen">            
+    <remap from="$(arg anyway)/$(arg pub_namespace)/move_base_simple/goal"           to="/move_base_simple/goal" />
+    <remap from="$(arg anyway)/$(arg pub_namespace)/rs_left/QR_localization_Request" to="/rs_left/QR_localization_Request" />
+  </node>
+</launch>

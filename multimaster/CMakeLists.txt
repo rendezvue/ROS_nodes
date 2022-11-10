@@ -29,6 +29,9 @@ add_executable(main src/main.cpp src/multimaster.cpp src/relay_topic.cpp)
 target_link_libraries(main topic_tools ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 #add_dependencies(subscriber beginner_tutorials_generate_messages_cpp)
 
+add_executable(foreign2host src/foreign2host.cpp src/multimaster.cpp src/relay_topic.cpp)
+target_link_libraries(foreign2host topic_tools ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+#add_dependencies(subscriber beginner_tutorials_generate_messages_cpp)
 
 
 add_executable(talker2 src/talker2.cpp)

@@ -11,6 +11,7 @@
 multimaster::multimaster(){
 
     config_name_ = "config"; 
+    config_foreign_name_ = "config_foreign";
     folder_path_ = ros::package::getPath("multimaster"); 
  
 }
@@ -88,7 +89,7 @@ bool multimaster::getHostTopicsList(){
 
 bool multimaster::getForeignTopicsList(){
     
- std::ifstream file_stream_topics(folder_path_+"/"+ config_name_ + ".yaml");
+ std::ifstream file_stream_topics(folder_path_+"/"+ config_foreign_name_ + ".yaml");
     if (file_stream_topics.is_open()) { // check if file exsist
          std::string line;
         std::string parser;

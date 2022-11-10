@@ -1,2 +1,2 @@
-local_pubs: [scan_rear,scan_front,particlecloud,]
-local_tf: [map->np,np->scan_front_frame,np->scan_rear_frame,map->true_pose,map->odom,]
+local_pubs: [/odom,/move_base/status,/move_base/result,/rs_front/QR_localization_complete,/rs_back/QR_localization_complete,/rs_left/QR_localization_complete,/rs_right/QR_localization_complete]
+local_tf: []

@@ -51,6 +51,7 @@ public:
 private:
 
     std::string  config_name_;
+    std::string  config_foreign_name_;
     std::string  folder_path_;
 
 };

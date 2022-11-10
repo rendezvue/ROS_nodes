@@ -1,0 +1,2 @@
+foreign_pubs: [/pub_child/move_base_simple/goal,/pub_child/rs_left/QR_localization_Request,/pub_child/rs_right/QR_localization_Request,/pub_child/rs_front/QR_localization_Request,]
+foreign_tf: []
