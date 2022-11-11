@@ -25,129 +25,95 @@ std::string multimaster::foreign_master_uri(){
 
 bool multimaster::getHostTopicsList(){
     
- std::ifstream file_stream_topics(folder_path_+"/"+ config_name_ + ".yaml");
+std::ifstream file_stream_topics(folder_path_+"/"+ config_name_ + ".yaml");
     if (file_stream_topics.is_open()) { // check if file exsist
-         std::string line;
+        std::string line;
         std::string parser;
-  
-         while (std::getline(file_stream_topics, line)) {
+        
+        while (std::getline(file_stream_topics, line)) {
             std::istringstream iss(line);
             getline(iss, parser, ':');
 
            //get the list of topics from local computer
             if(parser=="local_pubs"){
-                        std::string delim =",";
-                        auto start=line.find(":")+3;
-                        auto end = line.find(delim);
-                   while(end != std::string::npos){
 
-                      
-                       std::string temp=line.substr(start, end - start);
-                        hostTopicsList.push_back(temp);
-
-                        std::cout << line.substr(start, end - start) << std::endl;
-                        start = end + delim.length();
-                         end = line.find(delim, start);
-                    } 
-                }
-
-                 //get list of transforms from host
-                 if(parser=="local_tf"){
-                        std::string delim =",";
-                        std::string delim_tf ="->";
-                        auto start=line.find(":")+3;
-                        auto split=line.find(delim_tf);
-                        auto end = line.find(delim);
-                   while(end != std::string::npos){
-
-                      
-
-                        tfTransform temp;
-                        temp.from=line.substr(start, split - start);
-       
-                        temp.to=line.substr(split+delim_tf.length(), end-split-delim_tf.length());
-                        hostTfList.push_back(temp);
-
-                         start = end + delim.length();
-                         split=line.find(delim_tf, start);
-                         end = line.find(delim, start);
-                    } 
-                }
-    
-
-
-         }
-         file_stream_topics.close();
-    }else{
-
-       return false;
-    }
-   
-   return true;
-
-}
-
-bool multimaster::getForeignTopicsList(){
-    
- std::ifstream file_stream_topics(folder_path_+"/"+ config_foreign_name_ + ".yaml");
-    if (file_stream_topics.is_open()) { // check if file exsist
-         std::string line;
-        std::string parser;
-  
-         while (std::getline(file_stream_topics, line)) {
-            std::istringstream iss(line);
-            getline(iss, parser, ':');
-    
-                 //get the list of topics from foreign computer
-                 if(parser=="foreign_pubs"){
-                        std::string delim =",";
-                        auto start=line.find(":")+3;
-                        auto end = line.find(delim);
-                   while(end != std::string::npos){
-                        getline(iss, parser, ',');
-                   
+                while (getline(file_stream_topics, line)) {
+                    std::string delim =",";
+                    auto start=line.find("/");
+                    auto end = line.find(delim);
+                    while(end != std::string::npos){
                         std::string temp=line.substr(start, end - start);
-                        foreignTopicsList.push_back(temp);
-
+                        hostTopicsList.push_back(temp);
                         std::cout << line.substr(start, end - start) << std::endl;
                         start = end + delim.length();
                         end = line.find(delim, start);
-                    } 
-                }
+                        } 
+                }}
 
-                  //get list of transforms from foreign
-                 if(parser=="foreign_tf"){
-                        std::string delim =",";
-                        std::string delim_tf ="->";
-                        auto start=line.find(":")+3;
-                        auto split=line.find(delim_tf);
-                        auto end = line.find(delim);
-                   while(end != std::string::npos){
-
-                      
-  
+            //get list of transforms from host
+            if(parser=="local_tf"){
+                std::string delim =",";
+                std::string delim_tf ="->";
+                auto start=line.find(":")+3;
+                auto split=line.find(delim_tf);
+                auto end = line.find(delim);
+                while(end != std::string::npos){
                         tfTransform temp;
                         temp.from=line.substr(start, split - start);
                         temp.to=line.substr(split+delim_tf.length(), end-split-delim_tf.length());
-                         std::cout << line.substr(start, split - start) << std::endl;
-                         std::cout << line.substr(split+delim_tf.length(), end-split-delim_tf.length()) << std::endl;
-                        foreignTfList.push_back(temp);
-                      
-
-                         start = end + delim.length();
-                         split=line.find(delim_tf, start);
-                         end = line.find(delim, start);
+                        hostTfList.push_back(temp);
+                        start = end + delim.length();
+                        split=line.find(delim_tf, start);
+                        end = line.find(delim, start);
                     } 
                 }
-    
-         }
-         file_stream_topics.close();
+        }
+        
+
+        
+        file_stream_topics.close();
     }else{
 
-       return false;
+        return false;
     }
-   
-   return true;
+    return true;
+}
+
+//foreign pubs -> config_foreign.yaml 
+bool multimaster::getForeignTopicsList(){
+    
+std::ifstream file_stream_topics(folder_path_+"/"+ config_foreign_name_ + ".yaml");
+    if (file_stream_topics.is_open()) { // check if file exsist
+        std::string line;
+        std::string parser;
+        //parser checking
+        std::getline(file_stream_topics, line);
+        std::istringstream iss(line);
+        getline(iss, parser, ':');
+
+        if(parser=="foreign_pubs"){
+
+            while (getline(file_stream_topics, line)) {
+                std::string delim =",";
+                auto start=line.find("/");
+                auto end = line.find(delim);
+                while(end != std::string::npos){
+                    std::string temp=line.substr(start, end - start);
+                    hostTopicsList.push_back(temp);
+                    std::cout << line.substr(start, end - start) << std::endl;
+                    start = end + delim.length();
+                    end = line.find(delim, start);
+                    }  
+
+            }
+        }
+        
+        file_stream_topics.close();
+    }else{
+
+        return false;
+    }
+    return true;
 
 }
 
